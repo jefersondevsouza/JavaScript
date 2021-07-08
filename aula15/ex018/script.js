@@ -1,9 +1,9 @@
 let numeros = []
+let res = document.getElementById("res")
+let txtNumero = window.document.getElementById('txtNumero')
 
 function adicionarNumero()
 {
-    let txtNumero = window.document.getElementById('txtNumero')
-
     if(txtNumero.value === '')
     {
         window.alert("Por favor, digite um número!")
@@ -17,9 +17,19 @@ function adicionarNumero()
         }
         else
         {
-            validarAdicionarNumero(num)
+            if(numeros.indexOf(num) == -1)
+            {
+                guardarNumeroArray(num)
+            }
+            else
+            {
+                window.alert(`O valor ${num} já foi adicionado!`)
+            }
         }
     }
+
+    txtNumero.value = ''
+    txtNumero.focus()
 }
 
 function finalizar()
@@ -30,35 +40,22 @@ function finalizar()
     }
     else
     {
-        let res = document.getElementById("res")
-        res.innerHTML += `<p>Ao todo temos ${numeros.length} número cadastrados.`
         numeros.sort()
-
-        res.innerHTML += `<p>O maior valor informado foi ${numeros[numeros.length - 1]}.`
-
-        res.innerHTML += `<p>O menor valor informado foi ${numeros[0]}.`
-
+        let menor = numeros[0]
+        let maior = numeros[numeros.length - 1]
+        let total = numeros.length
         let soma = 0
-        numeros.forEach(element => { soma += element });
+        numeros.forEach(element => { soma += element })
+        let media = soma / total
 
+        res.innerHTML += `<p>Ao todo temos ${total} número cadastrados.`
+        res.innerHTML += `<p>O maior valor informado foi ${maior}.`
+        res.innerHTML += `<p>O menor valor informado foi ${menor}.`
         res.innerHTML += `<p>Somando todos os valores temos ${soma}.`
-
-        res.innerHTML += `<p>A média dos valores digitados é ${soma / numeros.length}.`
+        res.innerHTML += `<p>A média dos valores digitados é ${media}.`
     }
 
     numeros = []
-}
-
-function validarAdicionarNumero(num)
-{
-    if(numeros.indexOf(num) == -1)
-    {
-        guardarNumeroArray(num)
-    }
-    else
-    {
-        window.alert(`O valor ${num} já foi adicionado!`)
-    }
 }
 
 function guardarNumeroArray(num)
@@ -73,4 +70,5 @@ function guardarNumeroArray(num)
     item.text = `Valor ${num} adicionado`
     item.value = `tab${num}`
     selNumeros.appendChild(item)
+    res.innerHTML = ''
 }
